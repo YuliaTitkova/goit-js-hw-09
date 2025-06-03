@@ -1,0 +1,23 @@
+.main-menu {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+    list-style: none;
+}
+
+.menu-link {
+    padding: 16px 32px;
+    background-color: #20c997;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 14px rgba(32, 201, 151, 0.3);
+}
+
+.menu-link:hover {
+    background-color: #118c74;
+    transform: translateY(-4px);
+}
