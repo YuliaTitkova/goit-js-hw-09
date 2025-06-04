@@ -1,34 +1,47 @@
-'use strict';
-
 const form = document.querySelector('.feedback-form');
-const storageKey = 'feedback-form-state';
+const STORAGE_KEY = 'feedback-form-state';
 
-let formData = {
-  email: '',
-  message: '',
-};
-
-const savedData = localStorage.getItem(storageKey);
-if (savedData) {
-  formData = JSON.parse(savedData);
-  form.elements.email.value = formData.email || '';
-  form.elements.message.value = formData.message || '';
-}
-form.addEventListener('input', event => {
-  const { name, value } = event.target;
-  formData[name] = value.trim();
-  localStorage.setItem(storageKey, JSON.stringify(formData));
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      form.elements.email.value = parsed.email || '';
+      form.elements.message.value = parsed.message || '';
+    } catch (error) {
+      console.error('Local storage parse error:', error);
+    }
+  }
 });
-form.addEventListener('submit', event => {
-  event.preventDefault();
 
-  if (!formData.email || !formData.message) {
-    alert('Fill please all fields');
+form.addEventListener('input', e => {
+  const email = form.elements.email.value.trim();
+  const message = form.elements.message.value.trim();
+
+  const currentData = {
+    email,
+    message,
+  };
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+});
+
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const email = form.elements.email.value.trim();
+  const message = form.elements.message.value.trim();
+
+  if (!email || !message) {
+    alert('Please fill in all fields.');
     return;
   }
-  console.log('Submitted:', formData);
 
-  formData = { email: '', message: '' };
-  localStorage.removeItem(storageKey);
+  const submittedData = { email, message };
+  console.log(submittedData);
+
+
+  localStorage.removeItem(STORAGE_KEY);
   form.reset();
 });
